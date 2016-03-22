@@ -1,5 +1,7 @@
 # ShareYourMoments
 
-Add the Settings description here
+Please test the given code with the settings given below:
 
-Info for testing of code: API level-21, OS: 5.0.2 (lollipop), anroid phone: NEXUS S
+API level:21
+OS: 5.0.2 (lollipop)
+Android phone: NEXUS S
