@@ -1,4 +1,4 @@
-package tj.myfirstapp;
+package sym.android;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -156,6 +156,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
+            Intent gActivity = new  Intent(this,GroupsActivity.class);
+            startActivity(gActivity);
             //mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
             //updateUI(true);
         } else {
