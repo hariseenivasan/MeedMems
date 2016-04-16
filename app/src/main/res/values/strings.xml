@@ -15,5 +15,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="registering_message">Registered Notification</string>
     <string name="title_activity_groups">GroupsActivity</string>
+    <string name="title_activity_notification">NotificationActivity</string>
 </resources>

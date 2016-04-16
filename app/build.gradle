@@ -25,6 +25,10 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.google.android.gms:play-services-auth:8.4.0'
+    compile 'org.eclipse.jgit:org.eclipse.jgit:3.7.1.201504261725-r'
+    compile 'org.slf4j:slf4j-simple:1.6.1'
+    compile 'org.kohsuke:github-api:1.73'
+    compile "com.google.android.gms:play-services-gcm:8.4.0"
 
 }
 apply plugin: 'com.google.gms.google-services'
