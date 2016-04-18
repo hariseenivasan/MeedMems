@@ -109,10 +109,10 @@
     <orderEntry type="library" exported="" name="recyclerview-v7-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="jsch-0.1.50" level="project" />
     <orderEntry type="library" exported="" name="support-v4-23.1.1" level="project" />
-    <orderEntry type="library" exported="" name="jackson-annotations-2.2.3" level="project" />
     <orderEntry type="library" exported="" name="annotation-indexer-1.4" level="project" />
-    <orderEntry type="library" exported="" name="slf4j-api-1.7.2" level="project" />
+    <orderEntry type="library" exported="" name="jackson-annotations-2.2.3" level="project" />
     <orderEntry type="library" exported="" name="JavaEWAH-0.7.9" level="project" />
+    <orderEntry type="library" exported="" name="slf4j-api-1.7.2" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="slf4j-simple-1.6.1" level="project" />

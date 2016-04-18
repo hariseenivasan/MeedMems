@@ -6,6 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +31,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_CREATEDDATE = "createdDate";
     private static final String KEY_USERLIST = "userList";
     private static final String KEY_FILENAME = "fileName";
+    private static final String KEY_SIZE = "size";
     private static final String KEY_GROUPNAME = "groupName";
 
     public DatabaseHandler(Context context) {
@@ -36,8 +42,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_METADATA_TABLE = "CREATE TABLE " + TABLE_METADATA + "("
-                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_CREATEDDATE + " TEXT,"
-                + KEY_USERLIST + " TEXT," + KEY_FILENAME + " TEXT," +KEY_GROUPNAME+" TEXT"+")";
+                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_CREATEDDATE + " TEXT,"
+                + KEY_USERLIST + " TEXT," + KEY_FILENAME + " TEXT," + KEY_SIZE + " TEXT," +KEY_GROUPNAME+" TEXT"+")";
         db.execSQL(CREATE_METADATA_TABLE);
     }
 
@@ -51,15 +57,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addMetaData  (MetaData metaData)
-    {
+    public void addMetaData  (MetaData metaData) throws JSONException {
         SQLiteDatabase db = this.getWritableDatabase();
 
+
         ContentValues values = new ContentValues();
-        values.put(KEY_ID, metaData.getId());
+        //values.put(KEY_ID, metaData.getId()); Auto Increment
         values.put(KEY_CREATEDDATE, metaData.getCreatedDate());
-        values.put(KEY_USERLIST, metaData.getUserList());
-        values.put(KEY_FILENAME, metaData.getFileName());
+        values.put(KEY_USERLIST,ArrayListToJSONArrayString(metaData.getUserList(),KEY_USERLIST));
+        values.put(KEY_FILENAME, ArrayListToJSONArrayString(metaData.getFileNameList(),KEY_FILENAME));
+        values.put(KEY_SIZE, ArrayListToJSONArrayString(metaData.getSizeList(),KEY_SIZE));
         values.put(KEY_GROUPNAME, metaData.getGroupName());
 
         // Inserting Row
@@ -67,21 +74,39 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-    public MetaData getMetaData(long id) {
+    public MetaData getMetaData(long id) throws JSONException {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_METADATA, new String[] { KEY_ID,
-                        KEY_CREATEDDATE, KEY_USERLIST, KEY_FILENAME, KEY_GROUPNAME }, KEY_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
+        Cursor cursor = db.query(TABLE_METADATA, new String[]{KEY_ID,
+                        KEY_CREATEDDATE, KEY_USERLIST, KEY_FILENAME, KEY_SIZE, KEY_GROUPNAME}, KEY_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
-        MetaData metaData = new MetaData(Long.parseLong(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
+
+        MetaData metaData = new MetaData(Long.parseLong(cursor.getString(0)),cursor.getString(1),
+                JSONObjectStringtoList (cursor.getString(2)), JSONObjectStringtoList(cursor.getString(3)),
+                JSONObjectStringtoList (cursor.getString(4)), cursor.getString(5));
         // return contact
         return metaData;
     }
 
+    public ArrayList<String> JSONObjectStringtoList(String jsonObjectString) throws JSONException {
+        JSONObject json = new JSONObject(jsonObjectString);
+        return jsonArraytoList(json.optJSONArray(KEY_USERLIST));
+    }
+    public ArrayList<String> jsonArraytoList(JSONArray jArray) throws JSONException {
+        ArrayList<String> ao  = new ArrayList<String>();
+        for(int i=0;i<jArray.length();i++)
+            ao.add(jArray.get(i).toString());
+        return ao;
+    }
+
+    public String ArrayListToJSONArrayString(ArrayList<String> arrayList,String jsonString) throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put(jsonString, new JSONArray(arrayList));
+        return json.toString();
+    }
     /*public Cursor getData(long id){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "SELECT * FROM "+ TABLE_METADATA+ " where id="+id+"", null );
@@ -111,14 +136,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return cursor.getCount();
     }
 
-    public int updateContact (MetaData metadata)
-    {
+    public int updateContact (MetaData metadata) throws JSONException {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_ID, metadata.getId());
         contentValues.put(KEY_CREATEDDATE, metadata.getCreatedDate());
-        contentValues.put(KEY_USERLIST, metadata.getUserList());
-        contentValues.put(KEY_FILENAME, metadata.getFileName());
+        contentValues.put(KEY_USERLIST, ArrayListToJSONArrayString(metadata.getUserList(),KEY_USERLIST));
+        contentValues.put(KEY_FILENAME, ArrayListToJSONArrayString(metadata.getFileNameList(), KEY_FILENAME));
+        contentValues.put(KEY_SIZE, ArrayListToJSONArrayString(metadata.getSizeList(), KEY_SIZE));
         contentValues.put(KEY_GROUPNAME, metadata.getGroupName());
         //updating row
         return db.update(TABLE_METADATA, contentValues, KEY_ID + " = ?",
@@ -133,8 +158,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<MetaData> getAllMetaData()
-    {
+    public List<MetaData> getAllMetaData() throws JSONException {
         List<MetaData> metaDataList = new ArrayList<MetaData>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_METADATA;
@@ -145,12 +169,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                MetaData metaData = new MetaData();
-                metaData.setId(Long.parseLong(cursor.getString(0)));
-                metaData.setCreatedDate(cursor.getString(1));
-                metaData.setUserList(cursor.getString(2));
-                metaData.setFileName(cursor.getString(3));
-                metaData.setGroupName(cursor.getString(4));
+                MetaData metaData = new MetaData(Long.parseLong(cursor.getString(0)),cursor.getString(1),
+                        JSONObjectStringtoList (cursor.getString(2)), JSONObjectStringtoList(cursor.getString(3)),
+                        JSONObjectStringtoList (cursor.getString(4)), cursor.getString(5));
+
                 // Adding contact to list
                 metaDataList.add(metaData);
             } while (cursor.moveToNext());

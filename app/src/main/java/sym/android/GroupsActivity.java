@@ -7,19 +7,33 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import jGit.sym.src.JGitOps;
 import jGit.sym.src.TestJGit;
@@ -35,7 +49,7 @@ public class GroupsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         Intent i = getIntent();
-        GoogleSignInAccount acc = (GoogleSignInAccount)i.getParcelableExtra("GoogleAccount");
+        GoogleSignInAccount acc = i.getParcelableExtra("GoogleAccount");
         Log.d("Google Account Email", acc.getEmail());
         StrictMode.setThreadPolicy(policy);
 
@@ -54,6 +68,29 @@ public class GroupsActivity extends AppCompatActivity {
 
             }
         });
+        TextView tv = (TextView) findViewById(R.id.WaterMark);
+        View includedLayout = findViewById(R.id.LayoutList);
+
+        //Populate the groups from metadata.
+        DatabaseHandler db = new DatabaseHandler(this);
+        try {
+           List<MetaData> groups= db.getAllMetaData();
+            if(groups == null) {
+                includedLayout.setVisibility(View.INVISIBLE);
+                tv.setVisibility(View.VISIBLE);
+            }
+            else if(groups.size()==0) {
+                includedLayout.setVisibility(View.INVISIBLE);
+                tv.setVisibility(View.VISIBLE);
+            }else{
+
+                includedLayout.setVisibility(View.VISIBLE);
+                tv.setVisibility(View.INVISIBLE);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
        /* try {
             JGitOps jg = new JGitOps(getApplicationContext());
 
@@ -72,50 +109,28 @@ public class GroupsActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
+
         try {
             // When an Image is picked
             if (requestCode == PICK_IMAGE_MULTIPLE && resultCode == RESULT_OK
                     && null != data) {
-                // Get the Image from data
-
-                String[] filePathColumn = { MediaStore.Images.Media.DATA };
-                ArrayList<String> imagesEncodedList = new ArrayList<String>();
                 if(data.getData()!=null){
-
+                    //One Image Selected
                     Uri mImageUri=data.getData();
+                    mArrayUri.add(mImageUri);
 
-                    // Get the cursor
-                    Cursor cursor = getContentResolver().query(mImageUri,
-                            filePathColumn, null, null, null);
-                    // Move to first row
-                    cursor.moveToFirst();
-
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String imageEncoded  = cursor.getString(columnIndex);
-
-                    Log.d("Cursor","Path: "+" "+imageEncoded);
-                    imagesEncodedList.add(imageEncoded);
-                    cursor.close();
 
                 }else {
+                    //Multiple Image
                     if (data.getClipData() != null) {
                         ClipData mClipData = data.getClipData();
-                        ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
-                        for (int i = 0; i < mClipData.getItemCount(); i++) {
+                         for (int i = 0; i < mClipData.getItemCount(); i++) {
 
                             ClipData.Item item = mClipData.getItemAt(i);
                             Uri uri = item.getUri();
                             mArrayUri.add(uri);
-                            // Get the cursor
-                            Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
-                            // Move to first row
-                            cursor.moveToFirst();
-                            Log.d("Clipped",uri.getPath());
-                            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                            String imageEncoded  = cursor.getString(columnIndex);
-                            Log.d("Clipped","Path: "+i+" "+imageEncoded);
-                            imagesEncodedList.add(imageEncoded);
-                            cursor.close();
+
 
                         }
                         Log.v("LOG_TAG", "Selected Images" + mArrayUri.size());
@@ -130,8 +145,8 @@ public class GroupsActivity extends AppCompatActivity {
                     .show();
         }
         //start upload activity
-        Intent uploadIntent = new Intent(this, NotificationActivity.class);
-        uploadIntent.putExtra("data",data);
+        Intent uploadIntent = new Intent(this, UploadPhotoActivity.class);
+        uploadIntent.putParcelableArrayListExtra("uris", mArrayUri);
         startActivity(uploadIntent);
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -141,4 +156,27 @@ public class GroupsActivity extends AppCompatActivity {
      * 1. Create a git repository
      * 2. Send a notification to the other phone
      */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_groups, menu);
+        return true;// super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.logout:
+
+                Intent i =new Intent(getApplicationContext(), LoginActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                i.putExtra("Logout",true);
+                startActivity(i);
+                return true;
+            case R.id.action_settings:
+                return true;
+            default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
 }

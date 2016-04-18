@@ -3,29 +3,25 @@ package sym.android;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.provider.OpenableColumns;
+import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
-import java.io.IOException;
+import org.json.JSONException;
+
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.CheckedInputStream;
 //import android.support.v7.app.AppCompatActivity;
 
 /**
@@ -52,14 +48,17 @@ public class UploadPhotoActivity extends Activity implements View.OnClickListene
         long id=0;
 
         Intent intent = getIntent();
-        String[] imagesPath = intent.getStringExtra("data").split("\\|");
+        ArrayList<Uri> imagesPath ;
+        imagesPath = intent.<Uri>getParcelableArrayListExtra("uris");
+
         //System.out.println("Images Path from intent "+imagesPath[0]+" Length "+imagesPath.length);
         metaDataList = new ArrayList<MetaData>() ;
-
+        MetaData mData = PathMethods.processURIArray(this, imagesPath,"Test Group");
         //setting the created date
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String date = sdf.format(new Date());
 
+/*
         try{
             lnrImages.removeAllViews();
         }catch (Throwable e){
@@ -68,7 +67,6 @@ public class UploadPhotoActivity extends Activity implements View.OnClickListene
         for (int i=0;i<imagesPath.length;i++){
             imagesPathList.add(imagesPath[i]);
             id = db.getMaxId()+1;
-            metaDataList.add(new MetaData(id, date,"dummy", "dummy", "dummy" ));
             yourbitmap = BitmapFactory.decodeFile(imagesPath[i]);
 
             ImageView imageView = new ImageView(this);
@@ -76,7 +74,7 @@ public class UploadPhotoActivity extends Activity implements View.OnClickListene
             imageView.setAdjustViewBounds(true);
             lnrImages.addView(imageView);
         }
-
+*/
         btnUploadPhots = (Button)findViewById(R.id.btnUploadPhots);
         btnUploadPhots.setOnClickListener(this);
 
@@ -88,7 +86,11 @@ public class UploadPhotoActivity extends Activity implements View.OnClickListene
 
              showChangeLangDialog();
 
-            addMetaData(metaDataList);
+            try {
+                addMetaData(metaDataList);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
             Intent i = new Intent();
             setResult(Activity.RESULT_OK, i);
@@ -96,7 +98,7 @@ public class UploadPhotoActivity extends Activity implements View.OnClickListene
 
     }
 
-    public void addMetaData(List<MetaData> metaDataList){
+    public void addMetaData(List<MetaData> metaDataList) throws JSONException {
 
 
         for(MetaData md : metaDataList){
@@ -106,7 +108,7 @@ public class UploadPhotoActivity extends Activity implements View.OnClickListene
         List<MetaData> metadataReturn = db.getAllMetaData();
         for (MetaData md : metadataReturn) {
             String log = "Id: "+md.getId()+" ,Created Date: " + md.getCreatedDate() + " ,UserList: "
-                    + md.getUserList()+" ,fileName: "+md.getFileName() + " ,groupName:"+md.getGroupName();
+                    + md.getUserList()+" ,fileName: "+md.getFileNameList() + " ,groupName:"+md.getGroupName();
             // Writing Contacts to log
             System.out.println("Data: "+ log);
             System.out.println("Max Id"+db.getMaxId());

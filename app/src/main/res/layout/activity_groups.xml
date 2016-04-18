@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="sym.android.GroupsActivity">
-
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,8 +20,18 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_groups" />
-
+    <include layout="@layout/content_groups"
+        android:id="@+id/LayoutList"/>
+    <TextView
+        android:id="@+id/WaterMark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/noGroupWM"
+        android:textSize="@dimen/abc_text_size_large_material"
+        android:layout_gravity="center"
+        android:shadowColor="#9b9b9b"
+        android:textColor="#797979"
+        android:textIsSelectable="false" />
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btnAddPhoto"
         android:layout_width="wrap_content"
