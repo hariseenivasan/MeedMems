@@ -146,6 +146,10 @@ public class LoginActivity extends AppCompatActivity {
             //Parcel a;
             //acct.writeToParcel(a);
             gActivity.putExtra("GoogleAccount",acct);
+
+            Log.d("test_log", "*******this is test log Kiran*******");
+            Log.d("the_app_path",getApplicationContext().getFilesDir().getPath());
+
             startActivity(gActivity);
             //mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
             //updateUI(true);
