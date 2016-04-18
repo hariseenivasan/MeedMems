@@ -35,7 +35,7 @@ public class RegistrationIntentService extends IntentService {
 
     private static final String TAG = "RegIntentService";
     private static final String[] TOPICS = {"global"};
-
+    public static String token;
     public RegistrationIntentService() {
         super(TAG);
     }
@@ -52,13 +52,17 @@ public class RegistrationIntentService extends IntentService {
             // See https://developers.google.com/cloud-messaging/android/start for details on this file.
             // [START get_token]
             InstanceID instanceID = InstanceID.getInstance(this);
-            String token = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
+            token = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
             // [END get_token]
             Log.i(TAG, "GCM Registration Token: " + token);
 
             // TODO: Implement this method to send any registration to your app's servers.
             sendRegistrationToServer(token);
+            /*** Not Completely functional yet. ***/
+             SQLsymRegister dbRegister = new SQLsymRegister();
+             dbRegister.createOrUpdateRegistration(LoginActivity.acct.getEmail(),token,getString(R.string.gcm_defaultSenderId));
+             /**/
 
             // Subscribe to topic channels
             subscribeTopics(token);

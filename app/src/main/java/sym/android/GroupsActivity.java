@@ -7,7 +7,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 import java.io.IOException;
 
@@ -24,7 +27,9 @@ public class GroupsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
+        Intent i = getIntent();
+        GoogleSignInAccount acc = (GoogleSignInAccount)i.getParcelableExtra("GoogleAccount");
+        Log.d("Google Account Email", acc.getEmail());
         StrictMode.setThreadPolicy(policy);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

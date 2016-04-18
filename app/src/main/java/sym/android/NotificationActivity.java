@@ -36,7 +36,11 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import sym.android.QuickstartPreferences;
@@ -75,11 +79,22 @@ public class NotificationActivity extends AppCompatActivity {
                                                        try {
                                                            Bundle data = new Bundle();
                                                            data.putString("Message", "Hello World");
-                                                           data.putString("my_action", "SAY_HELLO");
+                                                           data.putString("my_action", "SAY_HELLO");JSONObject json = new JSONObject();
+                                                           Set<String> keys = data.keySet();
+                                                           for (String key : keys) {
+                                                               try {
+                                                                   json.put(key, data.get(key));
+                                                                   //json.put(key, JSONObject.wrap(data.get(key)));
+                                                               } catch(JSONException e) {
+                                                                   //Handle exception here
+                                                               }
+                                                           }
+
                                                            String id = Integer.toString(msgId.incrementAndGet());
-                                                           Log.d("BackGround Stuff","id: "+id+" SENDE_ID: "+SENDER_ID);
+                                                           Log.d("BackGround Stuff","id: "+id+" SENDER_ID: "+SENDER_ID);
                                                            gcm.send("312193709530" + "@gcm.googleapis.com", id, data);
                                                            msg = "Sent message";
+
                                                        } catch (IOException ex) {
                                                            msg = "Error :" + ex.getMessage();
                                                        }
@@ -118,6 +133,7 @@ public class NotificationActivity extends AppCompatActivity {
         if (checkPlayServices()) {
             // Start IntentService to register this application with GCM.
             Intent intent = new Intent(this, RegistrationIntentService.class);
+
             startService(intent);
         }
     }
