@@ -144,10 +144,11 @@ public class PathMethods {
     public static MetaData processURIArray(Context context,ArrayList<Uri> uris,String groupName){
 
         String[] filePathColumn = {MediaStore.Images.Media.DISPLAY_NAME,MediaStore.Images.Media.SIZE };
-        ArrayList<String> name=null;
-        ArrayList<String> path=null;
-        ArrayList<String> dataImg=null;
-        ArrayList<String> size=null;
+        ArrayList<String> name=new ArrayList<String>();
+        ArrayList<String> path=new ArrayList<String>();
+        ArrayList<String> dataImg=new ArrayList<String>();
+        ArrayList<String> size=new ArrayList<String>();
+        Log.d("processURI","URI Count: "+uris.size());
         for(Uri uri : uris) {
             path.add( PathMethods.getPath(context, uri));
             // Get the cursor

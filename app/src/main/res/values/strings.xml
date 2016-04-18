@@ -20,4 +20,6 @@
     <string name="title_activity_notification">NotificationActivity</string>
     <string name="noGroupWM">You have no groups yet! Get Started!</string>
     <string name="Logout">Logout</string>
+    <string name="title_activity_contacts">Select Contacts</string>
+    <string name="AddContact">+</string>
 </resources>

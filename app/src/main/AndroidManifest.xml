@@ -42,6 +42,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="sym.android.LoginActivity" />
         </activity>
+        <activity
+            android:name=".ContactsActivity"
+            android:label="@string/title_activity_contacts"
+            android:parentActivityName=".UploadPhotoActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sym.android.UploadPhotoActivity" />
+        </activity>
         <service
             android:name=".MyGcmListenerService"
             android:exported="false">

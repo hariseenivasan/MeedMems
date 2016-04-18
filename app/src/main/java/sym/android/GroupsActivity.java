@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -47,12 +48,12 @@ public class GroupsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_groups);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         Intent i = getIntent();
         GoogleSignInAccount acc = i.getParcelableExtra("GoogleAccount");
         Log.d("Google Account Email", acc.getEmail());
         StrictMode.setThreadPolicy(policy);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.btnAddPhoto);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +105,7 @@ public class GroupsActivity extends AppCompatActivity {
 
         Intent nActivity = new  Intent(this,NotificationActivity.class);
         //startActivity(nActivity);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     @Override
@@ -126,14 +127,15 @@ public class GroupsActivity extends AppCompatActivity {
                     if (data.getClipData() != null) {
                         ClipData mClipData = data.getClipData();
                          for (int i = 0; i < mClipData.getItemCount(); i++) {
-
+                            Log.d("ClipData index","Index: "+i+" Count "+mClipData.getItemCount());
                             ClipData.Item item = mClipData.getItemAt(i);
                             Uri uri = item.getUri();
-                            mArrayUri.add(uri);
+                            if(uri!=null)
+                                mArrayUri.add(uri);
 
 
                         }
-                        Log.v("LOG_TAG", "Selected Images" + mArrayUri.size());
+                        Log.v("LOG_TAG", "Selected Images " + mArrayUri.size());
                     }
                 }
             } else {

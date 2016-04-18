@@ -28,7 +28,7 @@ import java.util.List;
  * Created by Bhavya on 4/16/2016.
  */
 public class UploadPhotoActivity extends Activity implements View.OnClickListener {
-
+   private final int CONTACTS_RETURN = 200;
     private Button btnUploadPhots;
     Uri fileUri;
     ArrayList<String> imagesPathList;
@@ -50,6 +50,10 @@ public class UploadPhotoActivity extends Activity implements View.OnClickListene
         Intent intent = getIntent();
         ArrayList<Uri> imagesPath ;
         imagesPath = intent.<Uri>getParcelableArrayListExtra("uris");
+
+        Intent uploadIntent = new Intent(this, ContactsActivity.class);
+        //uploadIntent.putParcelableArrayListExtra("uris", mArrayUri);
+        startActivityForResult(uploadIntent, CONTACTS_RETURN);
 
         //System.out.println("Images Path from intent "+imagesPath[0]+" Length "+imagesPath.length);
         metaDataList = new ArrayList<MetaData>() ;
