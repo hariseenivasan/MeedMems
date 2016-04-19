@@ -160,12 +160,12 @@ public class LoginActivity extends AppCompatActivity {
             Log.d("the_app_path", getApplicationContext().getFilesDir().getPath());
 
 
-            GeneralUtil.remoteUpdateTokenMap(getApplicationContext(), "knadigatla@gmail.com", "efmgSA7UmlE:APA91bEaFNbzaX7MBDsq0P68gPmFyYjQLJLwvzzyuLPmDmnD5qY-kRCQ3Agh1mZDTHN5wFM1_vd7uBU5XZjWo2U1GUcmNIDEHqBULsuJb9s7AujjZLQH3Y5GKx4diEoU2AkPexX4R6Pz");
-
-                    ((TokenFetcher) this.getApplication()).setTokenMap(GeneralUtil.localUpdateTokenMap(getApplicationContext()));
-
-            Map<String,String> mapTest = ((TokenFetcher) this.getApplication()).getTokenMap();
-            Log.d("mapTest_keys", Arrays.toString(mapTest.keySet().toArray()));
+//            GeneralUtil.remoteUpdateTokenMap(getApplicationContext(), "knadigatla@gmail.com", "efmgSA7UmlE:APA91bEaFNbzaX7MBDsq0P68gPmFyYjQLJLwvzzyuLPmDmnD5qY-kRCQ3Agh1mZDTHN5wFM1_vd7uBU5XZjWo2U1GUcmNIDEHqBULsuJb9s7AujjZLQH3Y5GKx4diEoU2AkPexX4R6Pz");
+//
+//                    ((TokenFetcher) this.getApplication()).setTokenMap(GeneralUtil.localUpdateTokenMap(getApplicationContext()));
+//
+//            Map<String,String> mapTest = ((TokenFetcher) this.getApplication()).getTokenMap();
+//            Log.d("mapTest_keys", Arrays.toString(mapTest.keySet().toArray()));
 
             startActivity(gActivity);
             //mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
