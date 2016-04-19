@@ -112,14 +112,17 @@ public class JGitOps {
 
     public void clone(String repoName) throws GitAPIException {
         Log.d("JGitOps","clone Method");
-
+        CredentialsProvider cp = new UsernamePasswordCredentialsProvider(OAUTH_TOKEN, "");
         Git.cloneRepository().setURI(GITHUB_URL+"/"+USERNAME+"/"+repoName+".git")
-                .setDirectory(new File(LOCALPATH+"/"+repoName)).call();
+                .setCredentialsProvider(cp)
+                .setDirectory(new File(LOCALPATH + "/" + repoName)).call();
     }
 
     public void pull(String repoName) throws IOException, GitAPIException {
         Log.d("JGitOps","pull Method");
-        new Git(new FileRepository(LOCALPATH+"/"+repoName+"/"+".git")).pull().call();
+        CredentialsProvider cp = new UsernamePasswordCredentialsProvider(OAUTH_TOKEN, "");
+        new Git(new FileRepository(LOCALPATH+"/"+repoName+"/"+".git")).pull()
+                .setCredentialsProvider(cp).call();
     }
 
     public void push(String repoName) throws GitAPIException, IOException {

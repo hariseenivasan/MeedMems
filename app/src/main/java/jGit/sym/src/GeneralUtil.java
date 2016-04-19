@@ -219,14 +219,17 @@ public class GeneralUtil {
 
             if(f.isDirectory()) {
                 gitOps.pull(metaData.getGroupName());
+                return true;
             } else {
                 gitOps.clone(metaData.getGroupName());
+                gitOps.pull(metaData.getGroupName());
+                return true;
             }
 
         } catch (IOException e) {
-            Log.d("GeneralUtil:pullPhotos",e.getMessage());
+            Log.e("GeneralUtil:pullPhotos",e.getMessage());
         } catch (GitAPIException e) {
-            Log.d("GeneralUtil:pullPhotos", e.getMessage());
+            Log.e("GeneralUtil:pullPhotos", e.getMessage());
         }
 
         return retVal;
