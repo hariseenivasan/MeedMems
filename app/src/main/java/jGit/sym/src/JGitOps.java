@@ -25,7 +25,7 @@ import java.util.List;
 public class JGitOps {
 
     final private static String USERNAME="shareyourmoments25";
-    final private static String OAUTH_TOKEN="1ae8086aae818963eb6e6387bbbf84462aa5c04a";
+    final private static String OAUTH_TOKEN="";
     final private static String GITHUB_URL="https://github.com";
     private static String LOCALPATH;
 
@@ -33,6 +33,10 @@ public class JGitOps {
     public JGitOps(Context context){
         LOCALPATH = context.getFilesDir().getPath();
 
+    }
+
+    public JGitOps(String path) {
+        LOCALPATH = path;
     }
     /*public static void main(String[] args) throws IOException {
 

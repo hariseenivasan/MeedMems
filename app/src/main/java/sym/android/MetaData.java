@@ -11,9 +11,6 @@ import java.util.Arrays;
 public class MetaData {
     private long id;
     private String createdDate;
-
-
-
     private ArrayList<String> userList;
     private ArrayList<String> fileNameList;
     private ArrayList<String> sizeList;
