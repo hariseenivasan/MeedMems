@@ -117,8 +117,10 @@ public class GeneralUtil {
             gitUtil.commit(repoName, "committing new entry for "+emailid);
             gitUtil.push(repoName);
         } catch (IOException e) {
+            Log.d("GeneralUtil",e.getMessage());
             e.printStackTrace();
         } catch (GitAPIException e) {
+            Log.d("GeneralUtil",e.getMessage());
             e.printStackTrace();
         }
     }

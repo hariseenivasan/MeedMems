@@ -12,7 +12,7 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.kohsuke.github.GHOrganization;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
-
+import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import java.util.List;
 public class JGitOps {
 
     final private static String USERNAME="shareyourmoments25";
-    final private static String OAUTH_TOKEN="f621e91fb95daebb8016cdcbff506cc3387ef916";
+    final private static String OAUTH_TOKEN="194007559891d532a35137e0b0056cadf2276184";
     final private static String GITHUB_URL="https://github.com";
     private static String LOCALPATH;
 
@@ -55,6 +55,7 @@ public class JGitOps {
     }*/
 
     public String createRemoteRepo(String repoName) throws IOException {
+        Log.d("JGitOps","createRemoteRepo Method");
         GitHub gh = GitHub.connect(USERNAME,OAUTH_TOKEN);
         String name = gh.getMyself().getLogin()+"/"+repoName;
         try {
@@ -69,6 +70,8 @@ public class JGitOps {
     }
 
     public boolean deleteRemoteRepo(String repoName) {
+        Log.d("JGitOps","deleteRemoteRepo Method");
+
         try {
             GitHub gitHub = GitHub.connect(USERNAME,OAUTH_TOKEN);
 
@@ -93,6 +96,8 @@ public class JGitOps {
     }
 
     public List<String> listRemoteRepos() throws IOException {
+        Log.d("JGitOps","listRemoteRepos Method");
+
         Collection<GHRepository> lst = GitHub.connect(USERNAME,OAUTH_TOKEN).getUser(USERNAME).getRepositories().values();
         List<String> repoList = new ArrayList<String>(lst.size());
         for (GHRepository r : lst) {
@@ -102,28 +107,37 @@ public class JGitOps {
     }
 
     public void clone(String repoName) throws GitAPIException {
+        Log.d("JGitOps","clone Method");
+
         Git.cloneRepository().setURI(GITHUB_URL+"/"+USERNAME+"/"+repoName+".git")
                 .setDirectory(new File(LOCALPATH+"/"+repoName)).call();
     }
 
     public void pull(String repoName) throws IOException, GitAPIException {
+        Log.d("JGitOps","pull Method");
         new Git(new FileRepository(LOCALPATH+"/"+repoName+"/"+".git")).pull().call();
     }
 
     public void push(String repoName) throws GitAPIException, IOException {
+        Log.d("JGitOps","push Method");
         CredentialsProvider cp = new UsernamePasswordCredentialsProvider(OAUTH_TOKEN, "");
         new Git(new FileRepository(LOCALPATH+"/"+repoName+"/"+".git")).push().setCredentialsProvider(cp).call();
+
     }
 
     public void add(String repoName) throws IOException, GitAPIException {
-        new Git(new FileRepository(LOCALPATH+"/"+repoName+"/"+".git")).add().addFilepattern("*").call();
+        Log.d("JGitOps","add Method");
+        new Git(new FileRepository(LOCALPATH+"/"+repoName+"/"+".git")).add().addFilepattern(".").call();
+        Log.d("JGitOps","add methond:"+LOCALPATH+"/"+repoName+"/"+".git");
     }
 
     public void commit(String repoName, String message) throws IOException, GitAPIException {
+        Log.d("JGitOps","commit Method");
         new Git(new FileRepository(LOCALPATH+"/"+repoName+"/"+".git")).commit().setMessage(message).call();
     }
 
     public void setTracker(String repoName) throws IOException, GitAPIException {
+        Log.d("JGitOps","setTracker Method");
         new Git(new FileRepository(LOCALPATH+"/"+repoName+"/"+".git")).branchCreate().setName("master")
                 .setUpstreamMode(CreateBranchCommand.SetupUpstreamMode.SET_UPSTREAM)
                 .setStartPoint("origin/master").setForce(true).call();    }
