@@ -6,23 +6,38 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="sym.android.ContactsActivity">
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+
+
+    </android.support.design.widget.AppBarLayout>
+
 <GridLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-<EditText
+<AutoCompleteTextView
     android:layout_width="300sp"
     android:layout_height="wrap_content"
     android:layout_row="0"
     android:layout_column="0"
-    android:singleLine="true">
+    android:singleLine="true"
+    android:id="@+id/ContactsSearch">
 
-</EditText>
+</AutoCompleteTextView>
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -37,8 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ContactsListView"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-       ></ListView>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"></ListView>
 
 
     </LinearLayout>

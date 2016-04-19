@@ -26,6 +26,7 @@ import android.widget.Toast;
  * Created by mandar on 4/18/16.
  */
 public class CustomAdapter extends  ArrayAdapter<String> {
+
     public CustomAdapter(Context context, String[] DUMMY_CREDENTIALS) {
         super(context,R.layout.custom_row, DUMMY_CREDENTIALS);
     }
@@ -43,5 +44,10 @@ public class CustomAdapter extends  ArrayAdapter<String> {
        // contactImage.setImageResource(R.mipmap.images);
 
         return customView;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
     }
 }

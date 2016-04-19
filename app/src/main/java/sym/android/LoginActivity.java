@@ -151,10 +151,8 @@ public class LoginActivity extends AppCompatActivity {
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
              acct = result.getSignInAccount();
-            Intent gActivity = new  Intent(this, GroupsActivity.class);
-            //Parcel a;
-            //acct.writeToParcel(a);
-            gActivity.putExtra("GoogleAccount", acct);
+            Intent gActivity = new  Intent(this, NotificationActivity.class);
+            //gActivity.putExtra("GoogleAccount", acct);
 
             Log.d("test_log", "*******this is test log Kiran*******");
             Log.d("the_app_path", getApplicationContext().getFilesDir().getPath());

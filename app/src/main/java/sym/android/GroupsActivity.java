@@ -51,8 +51,6 @@ public class GroupsActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         Intent i = getIntent();
-        GoogleSignInAccount acc = i.getParcelableExtra("GoogleAccount");
-        Log.d("Google Account Email", acc.getEmail());
         StrictMode.setThreadPolicy(policy);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.btnAddPhoto);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -154,10 +152,6 @@ public class GroupsActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * 1. Create a git repository
-     * 2. Send a notification to the other phone
-     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();

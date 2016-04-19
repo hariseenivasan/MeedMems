@@ -18,6 +18,8 @@ public class MetaData {
     private ArrayList<String> fileNameList;
     private ArrayList<String> sizeList;
     private String groupName;
+    private String repoPath;
+
 
     public MetaData(String groupName){
         this.setGroupName( groupName);

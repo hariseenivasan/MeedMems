@@ -22,4 +22,5 @@
     <string name="Logout">Logout</string>
     <string name="title_activity_contacts">Select Contacts</string>
     <string name="AddContact">+</string>
+    <string name="action_done">Done</string>
 </resources>

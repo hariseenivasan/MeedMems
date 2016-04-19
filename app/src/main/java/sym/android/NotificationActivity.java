@@ -56,7 +56,6 @@ public class NotificationActivity extends AppCompatActivity {
     private ProgressBar mRegistrationProgressBar;
     private TextView mInformationTextView;
     private boolean isReceiverRegistered;
-    private Button mBtnSendMsg;
     GoogleCloudMessaging gcm;
     AtomicInteger msgId = new AtomicInteger();
 
@@ -66,49 +65,7 @@ public class NotificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
         SENDER_ID = getString(R.string.gcm_defaultSenderId);
-        mBtnSendMsg = (Button) findViewById(R.id.sndMessage);
         gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
-        mBtnSendMsg.setOnClickListener(new View.OnClickListener() {
-                                           @Override
-                                           public void onClick(View view) {
-
-                                               new AsyncTask() {
-                                                   @Override
-                                                   protected Object doInBackground(Object[] objects) {
-                                                       String msg = "";
-                                                       try {
-                                                           Bundle data = new Bundle();
-                                                           data.putString("Message", "Hello World");
-                                                           data.putString("my_action", "SAY_HELLO");JSONObject json = new JSONObject();
-                                                           Set<String> keys = data.keySet();
-                                                           for (String key : keys) {
-                                                               try {
-                                                                   json.put(key, data.get(key));
-                                                                   //json.put(key, JSONObject.wrap(data.get(key)));
-                                                               } catch(JSONException e) {
-                                                                   //Handle exception here
-                                                               }
-                                                           }
-
-                                                           String id = Integer.toString(msgId.incrementAndGet());
-                                                           Log.d("BackGround Stuff","id: "+id+" SENDER_ID: "+SENDER_ID);
-                                                           gcm.send("312193709530" + "@gcm.googleapis.com", id, data);
-                                                           msg = "Sent message";
-
-                                                       } catch (IOException ex) {
-                                                           msg = "Error :" + ex.getMessage();
-                                                       }
-                                                       return msg;
-                                                   }
-                                                   protected void onPostExecute(String msg) {
-                                                       mInformationTextView.append(msg + "\n");
-                                                   }
-                                               }.execute(null, null, null);
-
-                                           }
-
-                                       }
-        );
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.registrationProgressBar);
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -119,9 +76,9 @@ public class NotificationActivity extends AppCompatActivity {
                 boolean sentToken = sharedPreferences
                         .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
                 if (sentToken) {
-                    mInformationTextView.setText("Hari Sent a message to me ("+SENDER_ID+")");
+                    Log.d("Registration", "Token Created for senderID "+SENDER_ID);
                 } else {
-                    mInformationTextView.setText("This is a error Token ");
+                   Log.e("Registration", "Token creation unsuccessfull");
                 }
             }
         };
@@ -136,6 +93,8 @@ public class NotificationActivity extends AppCompatActivity {
 
             startService(intent);
         }
+        Intent gActivity = new  Intent(this, GroupsActivity.class);
+        startActivity(gActivity);
     }
 
     @Override

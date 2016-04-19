@@ -18,10 +18,12 @@ import android.widget.LinearLayout;
 
 import org.json.JSONException;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 //import android.support.v7.app.AppCompatActivity;
 
 /**
@@ -37,6 +39,7 @@ public class UploadPhotoActivity extends Activity implements View.OnClickListene
     private LinearLayout lnrImages;
     private Bitmap yourbitmap;
     List<MetaData> metaDataList;
+    MetaData mData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,11 +59,12 @@ public class UploadPhotoActivity extends Activity implements View.OnClickListene
         startActivityForResult(uploadIntent, CONTACTS_RETURN);
 
         //System.out.println("Images Path from intent "+imagesPath[0]+" Length "+imagesPath.length);
-        metaDataList = new ArrayList<MetaData>() ;
-        MetaData mData = PathMethods.processURIArray(this, imagesPath,"Test Group");
+        //metaDataList = new ArrayList<MetaData>() ;
+         mData = PathMethods.processURIArray(this, imagesPath,"Test Group");
         //setting the created date
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String date = sdf.format(new Date());
+        mData.setCreatedDate(date);
 
 /*
         try{
@@ -85,7 +89,18 @@ public class UploadPhotoActivity extends Activity implements View.OnClickListene
 
     }
 
-        @Override
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode==200){
+            String[] emailId = data.getStringArrayExtra("data");
+            mData.setUserList((ArrayList<String>) Arrays.asList(emailId));
+
+            mData.setGroupName((new Random(3422)).toString());
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public void onClick(View view) {
 
              showChangeLangDialog();
