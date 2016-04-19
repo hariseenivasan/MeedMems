@@ -28,6 +28,8 @@ import android.util.Log;
 import android.R;
 import com.google.android.gms.gcm.GcmListenerService;
 
+import jGit.sym.src.GeneralUtil;
+
 public class MyGcmListenerService extends GcmListenerService {
 
     private static final String TAG = "MyGcmListenerService";
@@ -54,7 +56,8 @@ public class MyGcmListenerService extends GcmListenerService {
             System.out.println("Message Recieved: "+message);
             // normal downstream message.
         }
-
+        MetaData mData = new MetaData(message);
+        GeneralUtil.pullPhotos(mData);
         //[START_EXCLUDE]
         /**
          * Production applications would usually process the message here.

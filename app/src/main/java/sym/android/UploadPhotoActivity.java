@@ -18,12 +18,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import jGit.sym.src.GeneralUtil;
@@ -98,13 +100,30 @@ public class UploadPhotoActivity extends Activity implements View.OnClickListene
             ArrayList<String> emailId = data.getStringArrayListExtra("data");
             mData.setUserList(emailId);
 
-            mData.setGroupName((new Random(3422)).toString());
-            Log.d("","");
+            mData.setGroupName("hari-1234");
+
+            JSONObject j = new JSONObject();
+            Map<String,String> map = ((TokenFetcher) this.getApplication()).getTokenMap();
+            String token = map.get(mData.getUserList().get(0));
+            Log.d("SendMessage","Token: "+token);
+            String dataJson = "{ \"data\": {\n" +
+                "    \"Message\": \""+mData.getGroupName()+"\",\n" +
+                "    \"Created\": \""+mData.getCreatedDate()+"\"\n" +
+                "  },\n" +
+                "  \"to\" : \""+token+"\"\n" +
+                "}";
+            try {
+                GeneralUtil.sendPost(dataJson);
+                Log.e("Message","Message Sent");
+            } catch (Exception e) {
+                Log.e("Message","Message not send");
+            }
             if(GeneralUtil.pushPhotos(mData))
                 Log.d("Push Photos","Success");
             else
                 Log.e("Push Photos", "Error");
         }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 

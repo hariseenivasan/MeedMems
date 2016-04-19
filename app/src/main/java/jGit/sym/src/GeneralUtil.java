@@ -193,7 +193,7 @@ public class GeneralUtil {
 
         //git add,commit,push to remote
         try {
-            gitOps.setTracker(metaData.getGroupName());
+           // gitOps.setTracker(metaData.getGroupName());
             gitOps.add(metaData.getGroupName());
             gitOps.commit(metaData.getGroupName(), "adding " + metaData.getSizeList() + " number of photos");
             gitOps.push(metaData.getGroupName());

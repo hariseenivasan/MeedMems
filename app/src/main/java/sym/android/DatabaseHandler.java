@@ -102,7 +102,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return ao;
     }
 
-    public String ArrayListToJSONArrayString(ArrayList<String> arrayList,String jsonString) throws JSONException {
+    public static String ArrayListToJSONArrayString(ArrayList<String> arrayList,String jsonString) throws JSONException {
         JSONObject json = new JSONObject();
         json.put(jsonString, new JSONArray(arrayList));
         return json.toString();
