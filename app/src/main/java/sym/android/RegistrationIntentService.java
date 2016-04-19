@@ -19,6 +19,7 @@ package sym.android;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -28,7 +29,9 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
 import java.io.IOException;
+import java.util.Map;
 
+import jGit.sym.src.GeneralUtil;
 import sym.android.R;
 
 public class RegistrationIntentService extends IntentService {
@@ -60,9 +63,26 @@ public class RegistrationIntentService extends IntentService {
             // TODO: Implement this method to send any registration to your app's servers.
             sendRegistrationToServer(token);
             /*** Not Completely functional yet. ***/
-             SQLsymRegister dbRegister = new SQLsymRegister();
-             dbRegister.createOrUpdateRegistration(LoginActivity.acct.getEmail(),token,getString(R.string.gcm_defaultSenderId));
+//             SQLsymRegister dbRegister = new SQLsymRegister();
+//             dbRegister.createOrUpdateRegistration(LoginActivity.acct.getEmail(),token,getString(R.string.gcm_defaultSenderId));
              /**/
+
+            //added by for git push
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            //checking whether the email is already registered, if not adding it to file
+            String email = LoginActivity.acct.getEmail();
+            //updating local hashMap from git
+            ((TokenFetcher) this.getApplication()).setTokenMap(GeneralUtil.localUpdateTokenMap(getApplicationContext()));
+            Map<String,String> tokenMap = ((TokenFetcher) this.getApplication()).getTokenMap();
+
+            if((tokenMap.get(email)!= null) && tokenMap.get(email).equals(token)) {
+                Log.d("RegistrationIntentSrv", "onHandleIntent: The token is already Present");
+            } else {
+                GeneralUtil.remoteUpdateTokenMap(getApplicationContext(), email, token);
+                Log.d("RegistrationIntentSrv", "onHandleIntent: The token is updated");
+            }
+
 
             // Subscribe to topic channels
             subscribeTopics(token);

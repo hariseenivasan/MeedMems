@@ -27,6 +27,8 @@ public class GeneralUtil {
     // HTTP POST request
     public static String sendPost(String data) throws Exception {
 
+        Log.d("GeneralUtil","In GeneralUtil.sendPost Method");
+
         String url = "https://gcm-http.googleapis.com/gcm/send";
         URL obj = new URL(url);
         HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
@@ -72,12 +74,14 @@ public class GeneralUtil {
 
     public static Map<String,String> localUpdateTokenMap(Context context) {
 
+        Log.d("GeneralUtil","In GeneralUtil.localUpdateTokenMap Method");
         String repoName="SYM";
         JGitOps gitUtil = new JGitOps(context);
         File f = new File(context.getFilesDir().getPath()+"/"+repoName);
-        if(!f.isDirectory()) {
+        Log.d("localUpdateTokenMap","the path is "+f.getAbsolutePath());
+        if(f.isDirectory()) {
             try {
-                gitUtil.setTracker(repoName);
+//                gitUtil.setTracker(repoName);
                 gitUtil.pull(repoName);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -87,11 +91,11 @@ public class GeneralUtil {
         }else {
             try {
                 gitUtil.clone(repoName);
-                gitUtil.setTracker(repoName);
+//                gitUtil.setTracker(repoName);
             } catch (GitAPIException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
             }
         }
 
@@ -101,6 +105,7 @@ public class GeneralUtil {
 
     public static void remoteUpdateTokenMap(Context context, String emailid, String token) {
 
+        Log.d("GeneralUtil","In GeneralUtil.remoteUpdateTokenMap Method");
         String repoName="SYM";
         JGitOps gitUtil = new JGitOps(context);
         File f = new File(context.getFilesDir().getPath()+"/"+repoName);
@@ -109,16 +114,19 @@ public class GeneralUtil {
         try {
             gitUtil.setTracker(repoName);
             gitUtil.add(repoName);
-            gitUtil.commit(repoName,"committing new entry for "+emailid);
+            gitUtil.commit(repoName, "committing new entry for "+emailid);
             gitUtil.push(repoName);
         } catch (IOException e) {
+            Log.d("GeneralUtil",e.getMessage());
             e.printStackTrace();
         } catch (GitAPIException e) {
+            Log.d("GeneralUtil",e.getMessage());
             e.printStackTrace();
         }
     }
 
     public static Map<String,String> readFile(String filePath) {
+        Log.d("GeneralUtil","In GeneralUtil.readFile Method");
 
         Map<String,String> testMap = new HashMap<String, String>();
 
@@ -139,6 +147,7 @@ public class GeneralUtil {
     }
 
     public static void writeFile(String filePath, String emailid, String token) {
+        Log.d("GeneralUtil","In GeneralUtil.writeFile Method");
         try
         {
             FileWriter fw = new FileWriter(filePath,true); //the true will append the new data

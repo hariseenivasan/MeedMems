@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Parcel;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -46,7 +47,11 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
+import jGit.sym.src.GeneralUtil;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -66,6 +71,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         boolean logout = getIntent().getBooleanExtra("Logout", false);
+
+        //added by kiran for a test
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         setContentView(R.layout.activity_login);
         if(logout){
@@ -142,13 +151,21 @@ public class LoginActivity extends AppCompatActivity {
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
              acct = result.getSignInAccount();
-            Intent gActivity = new  Intent(this,GroupsActivity.class);
+            Intent gActivity = new  Intent(this, GroupsActivity.class);
             //Parcel a;
             //acct.writeToParcel(a);
-            gActivity.putExtra("GoogleAccount",acct);
+            gActivity.putExtra("GoogleAccount", acct);
 
             Log.d("test_log", "*******this is test log Kiran*******");
-            Log.d("the_app_path",getApplicationContext().getFilesDir().getPath());
+            Log.d("the_app_path", getApplicationContext().getFilesDir().getPath());
+
+
+//            GeneralUtil.remoteUpdateTokenMap(getApplicationContext(), "knadigatla@gmail.com", "efmgSA7UmlE:APA91bEaFNbzaX7MBDsq0P68gPmFyYjQLJLwvzzyuLPmDmnD5qY-kRCQ3Agh1mZDTHN5wFM1_vd7uBU5XZjWo2U1GUcmNIDEHqBULsuJb9s7AujjZLQH3Y5GKx4diEoU2AkPexX4R6Pz");
+//
+//                    ((TokenFetcher) this.getApplication()).setTokenMap(GeneralUtil.localUpdateTokenMap(getApplicationContext()));
+//
+//            Map<String,String> mapTest = ((TokenFetcher) this.getApplication()).getTokenMap();
+//            Log.d("mapTest_keys", Arrays.toString(mapTest.keySet().toArray()));
 
             startActivity(gActivity);
             //mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
