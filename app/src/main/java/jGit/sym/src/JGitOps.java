@@ -34,6 +34,10 @@ public class JGitOps {
         LOCALPATH = context.getFilesDir().getPath();
 
     }
+
+    public JGitOps(String path) {
+        LOCALPATH = path;
+    }
     /*public static void main(String[] args) throws IOException {
 
         JGitOps jGitOps = new JGitOps();
