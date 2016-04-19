@@ -24,6 +24,7 @@ import android.widget.Toast;
 import org.apache.commons.lang.ArrayUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 import sym.android.R;
@@ -119,10 +120,10 @@ public class ContactsActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.action_done:
 
-                Intent i =new Intent(getApplicationContext(), LoginActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                i.putExtra("data",List_Adapter_values);
-               setResult(200);
+                Intent i =new Intent();
+               ArrayList<String> ar = new ArrayList<String>( Arrays.asList(List_Adapter_values));
+                i.putStringArrayListExtra("data", ar);
+               setResult(200,i);
                 finish();
                 return true;
             case R.id.action_settings:

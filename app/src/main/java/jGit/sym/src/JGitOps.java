@@ -30,11 +30,11 @@ public class JGitOps {
     private static String LOCALPATH;
 
 
+
     public JGitOps(Context context){
         LOCALPATH = context.getFilesDir().getPath();
 
     }
-
     public JGitOps(String path) {
         LOCALPATH = path;
     }

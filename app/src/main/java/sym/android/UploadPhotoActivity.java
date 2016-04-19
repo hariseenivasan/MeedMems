@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import jGit.sym.src.GeneralUtil;
 //import android.support.v7.app.AppCompatActivity;
 
 /**
@@ -92,10 +95,15 @@ public class UploadPhotoActivity extends Activity implements View.OnClickListene
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode==200){
-            String[] emailId = data.getStringArrayExtra("data");
-            mData.setUserList((ArrayList<String>) Arrays.asList(emailId));
+            ArrayList<String> emailId = data.getStringArrayListExtra("data");
+            mData.setUserList(emailId);
 
             mData.setGroupName((new Random(3422)).toString());
+            Log.d("","");
+            if(GeneralUtil.pushPhotos(mData))
+                Log.d("Push Photos","Success");
+            else
+                Log.e("Push Photos", "Error");
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
