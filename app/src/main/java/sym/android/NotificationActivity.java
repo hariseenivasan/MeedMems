@@ -78,7 +78,8 @@ public class NotificationActivity extends AppCompatActivity {
                 if (sentToken) {
                     Log.d("Registration", "Token Created for senderID "+SENDER_ID);
                 } else {
-                   Log.e("Registration", "Token creation unsuccessfull");
+                   Log.e("Registration", "Token creation unsuccessfull, Quitting application");
+                    System.exit(0);
                 }
             }
         };

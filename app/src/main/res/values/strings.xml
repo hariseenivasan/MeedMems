@@ -23,4 +23,16 @@
     <string name="title_activity_contacts">Select Contacts</string>
     <string name="AddContact">+</string>
     <string name="action_done">Done</string>
+    <string name="button_ok">Ok</string>
+    <string name="button_create_group">Create Group</string>
+    <string name="button_cancel">Cancel</string>
+    <!-- Strings Related to MetaData and DB -->
+    <string name="KEY_ID">id</string>
+    <string name="KEY_CREATEDDATE">createdDate</string>
+    <string name="KEY_USERLIST">userList</string>
+    <string name="KEY_FILENAME">fileName</string>
+    <string name="KEY_SIZE">size</string>
+    <string name="KEY_GROUPNAME">groupName</string>
+    <string name="notification_sync_greeting">Photo Sync Request</string>
+
 </resources>

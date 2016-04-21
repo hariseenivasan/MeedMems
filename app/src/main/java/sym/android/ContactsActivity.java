@@ -31,6 +31,8 @@ import sym.android.R;
 
 
 public class ContactsActivity extends AppCompatActivity {
+    private final static int RET_CODE_SUCCESS = 100;
+    private final static int RET_CODE_FAIL = 200;
     AutoCompleteTextView textView;
     Map<String,String> mapTest;
     CustomAdapter ContactAdapter;
@@ -117,18 +119,24 @@ public class ContactsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent i =new Intent();
         switch(item.getItemId()){
-            case R.id.action_done:
-
-                Intent i =new Intent();
-               ArrayList<String> ar = new ArrayList<String>( Arrays.asList(List_Adapter_values));
-                i.putStringArrayListExtra("data", ar);
-               setResult(200,i);
-                finish();
-                return true;
             case R.id.action_settings:
                 return true;
+            case R.id.action_done:
+
+                if(List_Adapter_values.length>0)
+                   {
+                    setResult(RESULT_OK, i);
+                    ArrayList<String> ar = new ArrayList<String>(Arrays.asList(List_Adapter_values));
+                    i.putStringArrayListExtra("data", ar);
+                }
+
             default:
+                if(List_Adapter_values.length<0)
+                    setResult(RESULT_CANCELED,i);
+
+                finish();
                 return super.onOptionsItemSelected(item);
         }
     }

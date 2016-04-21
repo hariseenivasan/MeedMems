@@ -23,17 +23,28 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.R;
 import com.google.android.gms.gcm.GcmListenerService;
+
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import jGit.sym.src.GeneralUtil;
 
 public class MyGcmListenerService extends GcmListenerService {
 
     private static final String TAG = "MyGcmListenerService";
-
+    public static final String GCM_JSON_KEY_GREETING = "Greeting";
+    public static final String GCM_JSON_KEY_OPERATION = "Operation";
+    public static final String GCM_JSON_KEY_MESSAGE = "Message";
+    public static final String GCM_JSON_KEY_SENTBY = "Sentby";
+    public static final String GCM_JSON_DATA = "data";
+    public static final String GCM_JSON_TO = "to";
     /**
      * Called when message is received.
      *
@@ -45,19 +56,56 @@ public class MyGcmListenerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         Log.d(TAG,data.toString());
-        String message = data.getString("Message");
-        Log.d(TAG, "From: " + from);
-        Log.d(TAG, "Message: " + message);
+        String greeting = data.getString(GCM_JSON_KEY_GREETING);
+        int operation = Integer.parseInt(data.getString(GCM_JSON_KEY_OPERATION));
+        String message = data.getString(GCM_JSON_KEY_MESSAGE);
+        String sentBy = data.getString(GCM_JSON_KEY_SENTBY);
+        Log.d(TAG, GCM_JSON_KEY_SENTBY    + " " + sentBy);
+        Log.d(TAG, GCM_JSON_KEY_MESSAGE   + " " + message);
+        Log.d(TAG, GCM_JSON_KEY_OPERATION + " " + operation);
+        Log.d(TAG, GCM_JSON_KEY_GREETING  + " " + greeting);
 
         if (from.startsWith("/topics/")) {
             System.out.println("Message Recieved in topic: "+message);
             // message received from some topic.
         } else {
-            System.out.println("Message Recieved: "+message);
+            System.out.println("Share Your Moments: "+message);
             // normal downstream message.
         }
-        MetaData mData = new MetaData(message);
-        GeneralUtil.pullPhotos(mData);
+        MetaData mData = null;
+        try {
+            mData = new MetaData(data.getString(DatabaseHandler.KEY_GROUPNAME));
+            mData.setUserList(new ArrayList<String>(Arrays.asList(data.getString(DatabaseHandler.KEY_USERLIST))));
+            mData.setGroupDetails(new ArrayList<String>(Arrays.asList((data.getString(DatabaseHandler.KEY_FILENAME)))),
+                    new ArrayList<String>(Arrays.asList((data.getString(DatabaseHandler.KEY_SIZE)))));
+            mData.setCreatedDate(data.getString(DatabaseHandler.KEY_CREATEDDATE));
+            DatabaseHandler db = new DatabaseHandler(this);
+            Log.d("GCM Metadata","Metadata "+DatabaseHandler.JSONStringFromMetaData(mData));
+
+            switch (operation){
+
+                case DatabaseHandler.DB_OP_DELETE:
+                    db.deleteMetaData(mData);
+                    break;
+                case DatabaseHandler.DB_OP_ADD:
+                    db.addMetaData(mData);
+                case DatabaseHandler.DB_OP_SYNC:
+                    GeneralUtil.pullPhotos(mData);
+                    break;
+                case DatabaseHandler.DB_OP_UPDATE:
+                    db.updateMetaData(mData);
+                    GeneralUtil.pullPhotos(mData);
+            }
+            if(operation== DatabaseHandler.DB_OP_ADD||operation== DatabaseHandler.DB_OP_SYNC||operation== DatabaseHandler.DB_OP_UPDATE) {
+               // GeneralUtil.pullPhotos(mData);
+
+              db.addMetaData(mData);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(TAG,"Fatal error not synced.");
+        }
+
         //[START_EXCLUDE]
         /**
          * Production applications would usually process the message here.
@@ -70,7 +118,7 @@ public class MyGcmListenerService extends GcmListenerService {
          * In some cases it may be useful to show a notification indicating to the user
          * that a message was received.
          */
-        sendNotification(message);
+        sendNotification(greeting);
         //[END_EXCLUDE]
     }
     //[END receive_message]
@@ -89,7 +137,7 @@ public class MyGcmListenerService extends GcmListenerService {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_notification_overlay)
-                .setContentTitle("GCM Message")
+                .setContentTitle("Share Your Moments")
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
@@ -100,4 +148,6 @@ public class MyGcmListenerService extends GcmListenerService {
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
+
+
 }

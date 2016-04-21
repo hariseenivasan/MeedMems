@@ -63,6 +63,7 @@ public class GeneralUtil {
 
         int responseCode = con.getResponseCode();
         Log.d("POST call URL-", url);
+        Log.d("POST call data-", data);
         Log.d("Response Code : ", Integer.toString(responseCode));
 
         BufferedReader in = new BufferedReader(
@@ -120,7 +121,7 @@ public class GeneralUtil {
         writeFile(f.getAbsolutePath() + "/tokensmetadata", emailid, token);
 
         try {
-            gitUtil.setTracker(repoName);
+            //gitUtil.setTracker(repoName);
             gitUtil.add(repoName);
             gitUtil.commit(repoName, "committing new entry for "+emailid);
             gitUtil.push(repoName);
@@ -142,6 +143,7 @@ public class GeneralUtil {
             BufferedReader in = new BufferedReader(new FileReader(filePath));
             String line;
             while ((line = in.readLine()) != null) {
+                Log.d("**TOKENINFO**",line);
                 if (line.trim() != "") {
                     testMap.put(line.split("=")[0], line.split("=")[1]);
                 }
@@ -160,6 +162,7 @@ public class GeneralUtil {
         {
             FileWriter fw = new FileWriter(filePath,true); //the true will append the new data
             fw.write(emailid+"="+token+"\n");//appends the string to the file
+            Log.d("**TOKENINFOWRITE~~**", emailid+"="+token);
             fw.close();
         }
         catch(IOException ioe)

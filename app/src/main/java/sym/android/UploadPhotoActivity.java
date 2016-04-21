@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,13 +44,15 @@ public class UploadPhotoActivity extends Activity implements View.OnClickListene
     DatabaseHandler db;
     private LinearLayout lnrImages;
     private Bitmap yourbitmap;
-    List<MetaData> metaDataList;
     MetaData mData;
+    String groupName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
         System.out.println("Inside Upload ");
+
+       //showChangeLangDialog();
         db = new DatabaseHandler(this);
         lnrImages = (LinearLayout) findViewById(R.id.lnrImages1);
         imagesPathList = new ArrayList<String>();
@@ -63,9 +66,7 @@ public class UploadPhotoActivity extends Activity implements View.OnClickListene
         //uploadIntent.putParcelableArrayListExtra("uris", mArrayUri);
         startActivityForResult(uploadIntent, CONTACTS_RETURN);
 
-        //System.out.println("Images Path from intent "+imagesPath[0]+" Length "+imagesPath.length);
-        //metaDataList = new ArrayList<MetaData>() ;
-         mData = PathMethods.processURIArray(this, imagesPath,"Test Group");
+        mData = PathMethods.processURIArray(this, imagesPath,"Test Group");
         //setting the created date
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String date = sdf.format(new Date());
@@ -88,7 +89,7 @@ public class UploadPhotoActivity extends Activity implements View.OnClickListene
             lnrImages.addView(imageView);
         }
 */
-        btnUploadPhots = (Button)findViewById(R.id.btnUploadPhots);
+        btnUploadPhots = (Button) findViewById(R.id.btnUploadPhots);
         btnUploadPhots.setOnClickListener(this);
 
 
@@ -131,13 +132,13 @@ public class UploadPhotoActivity extends Activity implements View.OnClickListene
     public void onClick(View view) {
 
              showChangeLangDialog();
-
+/*
             try {
-                addMetaData(metaDataList);
+              //  addMetaData(metaDataList);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
+*/
             Intent i = new Intent();
             setResult(Activity.RESULT_OK, i);
             finish();
@@ -164,13 +165,14 @@ public class UploadPhotoActivity extends Activity implements View.OnClickListene
     }
 
     public void showChangeLangDialog() {
+        Log.i("ChgDialog","ShowChangeLangDialog");
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.custom_dialog, null);
         final String result;
         dialogBuilder.setView(dialogView);
 
-        final EditText userInput = (EditText) dialogView.findViewById(R.id.edit1);
+        final EditText userInput = new EditText(getApplicationContext()); //(EditText) dialogView.findViewById(R.id.edit1);
 
         dialogBuilder.setTitle("Group Name");
         dialogBuilder.setMessage("Enter Group Name");
@@ -190,6 +192,7 @@ public class UploadPhotoActivity extends Activity implements View.OnClickListene
         AlertDialog b = dialogBuilder.create();
         b.show();
 
+        Log.i("ChgDialog", "Ended");
 
     }
 

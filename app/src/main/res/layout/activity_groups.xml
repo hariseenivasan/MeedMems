@@ -19,9 +19,14 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/LayoutList"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"></ListView>
 
-    <include layout="@layout/content_groups"
-        android:id="@+id/LayoutList"/>
+   <!-- <include layout="@layout/content_groups"
+        android:id="@+id/LayoutList"/>-->
     <TextView
         android:id="@+id/WaterMark"
         android:layout_width="wrap_content"
