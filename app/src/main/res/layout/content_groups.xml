@@ -16,7 +16,6 @@
         android:id="@+id/group_pic"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:contentDescription="desc"
         android:paddingLeft="10dp"
         android:paddingRight="10dp" />
     <TextView
@@ -26,26 +25,32 @@
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/group_pic"
         android:paddingBottom="10dp"
-        android:text="txt"
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/status"
+        android:id="@+id/group_created"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/group_name"
         android:layout_below="@+id/group_name"
-        android:text="txt"
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/group_size"
+        android:id="@+id/group_contact_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/group_name"
         android:layout_alignBottom="@+id/group_name"
         android:layout_alignParentRight="true"
-        android:text="txt"
         android:textSize="16sp" />
+    <TextView
+        android:id="@+id/group_image_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/group_name"
+        android:layout_alignBottom="@+id/group_name"
+        android:layout_alignParentRight="true"
+        android:textSize="16sp" />
+
 
 </RelativeLayout>

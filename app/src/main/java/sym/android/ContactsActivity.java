@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
+import jGit.sym.src.GeneralUtil;
 import sym.android.R;
 
 
@@ -47,7 +48,7 @@ public class ContactsActivity extends AppCompatActivity {
         String[] DUMMY_CREDENTIALS = {"Hari Seenivasan" , "Kiran Nadigala", "Tejaswini" ,"Shamrin","Bhavya"};
 
         ContactsListView = (ListView) findViewById(R.id.ContactsListView);
-
+        ((TokenFetcher) this.getApplication()).setTokenMap(GeneralUtil.localUpdateTokenMap(this));
         mapTest = ((TokenFetcher) this.getApplication()).getTokenMap();
         String[] searchable;
         if(mapTest!=null) {
@@ -58,7 +59,7 @@ public class ContactsActivity extends AppCompatActivity {
             searchable = DUMMY_CREDENTIALS;
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, searchable);
+                android.R.layout.simple_gallery_item, searchable);
          textView = (AutoCompleteTextView)
                 findViewById(R.id.ContactsSearch);
         textView.setAdapter(adapter);

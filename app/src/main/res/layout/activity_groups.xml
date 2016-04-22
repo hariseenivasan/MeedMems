@@ -22,7 +22,7 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/LayoutList"
+        android:id="@+id/Group_LayoutList"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"></ListView>
 
    <!-- <include layout="@layout/content_groups"

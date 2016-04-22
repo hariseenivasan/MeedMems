@@ -84,12 +84,14 @@ public class GroupsActivity extends AppCompatActivity {
             }
         });
         TextView tv = (TextView) findViewById(R.id.WaterMark);
-         listViewGroup = (ListView) findViewById(R.id.LayoutList);
+         listViewGroup = (ListView) findViewById(R.id.Group_LayoutList);
 
         //Populate the groups from metadata.
         DatabaseHandler db = new DatabaseHandler(this);
         try {
-           List<MetaData> groups= db.getAllMetaData();
+            List<String> groups = db.getKeyMetaData(DatabaseHandler.KEY_GROUPNAME);
+            List<String> createdData= db.getKeyMetaData(DatabaseHandler.KEY_CREATEDDATE);
+            List<String> userList= db.getKeyMetaData(DatabaseHandler.KEY_USERLIST);
             if(groups == null) {
                 listViewGroup.setVisibility(View.INVISIBLE);
                 tv.setVisibility(View.VISIBLE);
@@ -98,7 +100,10 @@ public class GroupsActivity extends AppCompatActivity {
                 listViewGroup.setVisibility(View.INVISIBLE);
                 tv.setVisibility(View.VISIBLE);
             }else{
-                List<MetaData> mDataList = db.getAllMetaData();
+                List<MetaData> data = db.getAllMetaData();
+                Log.d("MetaData Database","Count "+data.size());
+                MetaDataAdapter adapter = new MetaDataAdapter(this, (ArrayList<MetaData>)data);
+                listViewGroup.setAdapter(adapter);
                 listViewGroup.setVisibility(View.VISIBLE);
                 tv.setVisibility(View.INVISIBLE);
             }

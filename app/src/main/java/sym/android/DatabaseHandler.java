@@ -198,12 +198,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                for(int i=0;i<=5;i++){
-                Log.d("Cursor pos "+i,"Data "+cursor.getString(i));
-                }
-                MetaData metaData = new MetaData(Long.parseLong(cursor.getString(0)),cursor.getString(1),
-                        jsonArraytoList(new JSONArray(cursor.getString(2))), jsonArraytoList(new JSONArray(cursor.getString(3))),
-                        jsonArraytoList(new JSONArray(cursor.getString(4))), cursor.getString(5));
+                    MetaData metaData = new MetaData(Long.parseLong(cursor.getString(0)),cursor.getString(1),
+                            jsonArraytoList(new JSONArray(cursor.getString(2))), jsonArraytoList(new JSONArray(cursor.getString(3))),
+                            jsonArraytoList(new JSONArray(cursor.getString(4))), cursor.getString(5));
 
                 // Adding contact to list
                 metaDataList.add(metaData);
@@ -212,5 +209,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // return contact list
         return metaDataList;
+    }
+    public List<String> getKeyMetaData(String key) throws JSONException {
+        List<String> resultSetArray = new ArrayList<String>();
+        // Select All Query
+        String selectQuery = "SELECT  "+key+" FROM " + TABLE_METADATA;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+
+                // Adding contact to list
+                resultSetArray.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+
+        // return contact list
+        return resultSetArray;
     }
 }
