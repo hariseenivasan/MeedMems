@@ -40,7 +40,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/group_name"
-        android:layout_alignBottom="@+id/group_name"
         android:layout_alignParentRight="true"
         android:textSize="16sp" />
     <TextView

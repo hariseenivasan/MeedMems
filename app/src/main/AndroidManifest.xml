@@ -52,6 +52,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="sym.android.UploadPhotoActivity" />
         </activity>
+
         <service
             android:name=".MyGcmListenerService"
             android:exported="false">
@@ -59,6 +60,7 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
+
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
@@ -69,23 +71,38 @@
                 <category android:name="com.example.gcm" />
             </intent-filter>
         </receiver>
-        <service android:name=".RegistrationIntentService" android:exported="false"/>
+
+        <service
+            android:name=".RegistrationIntentService"
+            android:exported="false" />
         <service
             android:name=".MyInstanceIDListenerService"
             android:exported="false">
-            <intent-filter>/
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
+            <intent-filter>
+                /
+                <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
         </service>
+
         <activity
             android:name=".NotificationActivity"
             android:label="@string/title_activity_notification">
-        <intent-filter>
-            <action android:name="OPEN_ACTIVITY_1" />
-            <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter></activity>
-        <activity android:name=".CustomPhotoGalleryActivity"></activity>
-        <activity android:name=".UploadPhotoActivity"></activity>
+            <intent-filter>
+                <action android:name="OPEN_ACTIVITY_1" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".CustomPhotoGalleryActivity" />
+        <activity android:name=".UploadPhotoActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".GroupsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="sym.android.GroupsActivity" />
+        </activity>
     </application>
 
 </manifest>
