@@ -110,7 +110,7 @@ public class GroupsActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-       /* try {
+        try {
             JGitOps jg = new JGitOps(getApplicationContext());
 
         jg.listRemoteRepos();
@@ -118,7 +118,7 @@ public class GroupsActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
 
 
         Intent nActivity = new  Intent(this,NotificationActivity.class);
