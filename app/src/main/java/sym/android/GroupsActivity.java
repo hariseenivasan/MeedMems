@@ -62,6 +62,7 @@ public class GroupsActivity extends AppCompatActivity {
     ArrayAdapter<String> groupNameArray;
     ArrayAdapter<String> numContactsArray;
     ArrayAdapter<String> createdDataArray;
+    public static  MetaDataAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,20 +90,18 @@ public class GroupsActivity extends AppCompatActivity {
         //Populate the groups from metadata.
         DatabaseHandler db = new DatabaseHandler(this);
         try {
-            List<String> groups = db.getKeyMetaData(DatabaseHandler.KEY_GROUPNAME);
-            List<String> createdData= db.getKeyMetaData(DatabaseHandler.KEY_CREATEDDATE);
-            List<String> userList= db.getKeyMetaData(DatabaseHandler.KEY_USERLIST);
-            if(groups == null) {
+            List<MetaData> data = db.getAllMetaData();
+            if(data == null) {
                 listViewGroup.setVisibility(View.INVISIBLE);
                 tv.setVisibility(View.VISIBLE);
             }
-            else if(groups.size()==0) {
+            else if(data.size()==0) {
                 listViewGroup.setVisibility(View.INVISIBLE);
                 tv.setVisibility(View.VISIBLE);
             }else{
-                List<MetaData> data = db.getAllMetaData();
+                adapter = new MetaDataAdapter(this,(ArrayList<MetaData>)data);
                 Log.d("MetaData Database","Count "+data.size());
-                MetaDataAdapter adapter = new MetaDataAdapter(this, (ArrayList<MetaData>)data);
+
                 listViewGroup.setAdapter(adapter);
                 listViewGroup.setVisibility(View.VISIBLE);
                 tv.setVisibility(View.INVISIBLE);
@@ -241,19 +240,24 @@ public class GroupsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent i;
         switch(item.getItemId()){
             case R.id.logout:
 
-                Intent i =new Intent(getApplicationContext(), LoginActivity.class);
+                i =new Intent(getApplicationContext(), LoginActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                i.putExtra("Logout",true);
+                i.putExtra("Logout", true);
                 startActivity(i);
-                return true;
+                break;
             case R.id.action_settings:
-                return true;
+                i =new Intent(getApplicationContext(), SettingsActivity.class);
+                i.putExtra("Logout", true);
+                startActivity(i);
+               break;
             default:
-            return super.onOptionsItemSelected(item);
+            break;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     public void getGroupNameAndAlbums(){

@@ -101,7 +101,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_METADATA_TABLE = "CREATE TABLE " + TABLE_METADATA + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_CREATEDDATE + " TEXT,"
-                + KEY_USERLIST + " TEXT," + KEY_FILENAME + " TEXT," + KEY_SIZE + " TEXT," +KEY_GROUPNAME+" TEXT"+")";
+                + KEY_USERLIST + " TEXT," + KEY_FILENAME + " TEXT," + KEY_SIZE + " TEXT," +KEY_GROUPNAME+" TEXT UNIQUE"+")";
         db.execSQL(CREATE_METADATA_TABLE);
     }
 

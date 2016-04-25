@@ -1,6 +1,8 @@
 package sym.android;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -29,9 +31,11 @@ public class MetaDataAdapter extends  ArrayAdapter<MetaData> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater contactsInflater = LayoutInflater.from(getContext());
         View customView = contactsInflater.inflate(R.layout.content_groups, parent, false);
+        /*
         Log.d("GetView", "Position "+position);
         Log.d("GetView", "GetItem "+getItem(position));
-        Log.d("GetView", "Position "+getItem(position).getGroupName());
+        Log.d("GetView", "Group Name: "+getItem(position).getGroupName());
+        */
         TextView groupNameTxt = (TextView) customView.findViewById(R.id.group_name);
         TextView groupCreated = (TextView) customView.findViewById(R.id.group_created);
         TextView groupContactCount = (TextView) customView.findViewById(R.id.group_contact_count);
@@ -43,18 +47,42 @@ public class MetaDataAdapter extends  ArrayAdapter<MetaData> {
         groupCreated.setText(getItem(position).getCreatedDate());
         groupContactCount.setText(""+getItem(position).getUserList().size());
         ArrayList<String> listImageUri = getItem(position).getFileNameList();
-
+        groupImageCount.setText(""+listImageUri.size());
        // contactImage.setImageResource(R.mipmap.images);
-     /*   Bitmap bitmap = MediaStore.Images.Thumbnails.getThumbnail(
-                getContext().getContentResolver(), Uri.fromFile(new File(listImageUri.get(0))).getQuery(),
-                MediaStore.Images.Thumbnails.MINI_KIND,
-                (BitmapFactory.Options) null );
-*/
+        try {
+            Bitmap bitmap = getThumbnail(getContext().getContentResolver(),listImageUri.get(0));
+            groupImage.setImageBitmap(bitmap);
+            //Log.d("BITMAP","BITMAP Set "+bitmap.getByteCount());
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("BITMAP", "BITMAP ERROR "+e.getMessage());
+        }
+
         return customView;
     }
 
     @Override
     public void notifyDataSetChanged() {
+
         super.notifyDataSetChanged();
+    }
+
+    public static Bitmap getThumbnail(ContentResolver cr, String path) throws Exception {
+
+        //Cursor ca = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[] { MediaStore.MediaColumns._ID }, MediaStore.MediaColumns.DATA + "=?", new String[] {path}, null);
+        String[] projection = new String[] {MediaStore.Images.Thumbnails._ID, MediaStore.Images.Thumbnails.IMAGE_ID};
+        Cursor ca = cr.query(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, projection, null, null, null);
+
+        if (ca != null && ca.moveToFirst()) {
+            int id = ca.getInt(ca.getColumnIndex(MediaStore.Images.Thumbnails.IMAGE_ID));
+            Log.d("ID","cursor ID "+id);
+            ca.close();
+            return MediaStore.Images.Thumbnails.getThumbnail(cr, id, MediaStore.Images.Thumbnails.MICRO_KIND, null );
+        }
+
+        ca.close();
+        Log.e("ID", "cursor NULL ");
+        return null;
+
     }
 }

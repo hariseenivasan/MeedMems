@@ -96,6 +96,7 @@ public class MyGcmListenerService extends GcmListenerService {
                     db.updateMetaData(mData);
                     GeneralUtil.pullPhotos(mData);
             }
+            GroupsActivity.adapter.notifyDataSetChanged();
             if(operation== DatabaseHandler.DB_OP_ADD||operation== DatabaseHandler.DB_OP_SYNC||operation== DatabaseHandler.DB_OP_UPDATE) {
                // GeneralUtil.pullPhotos(mData);
 

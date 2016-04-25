@@ -17,7 +17,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
+        android:paddingRight="10dp" android:icon="@android:drawable/ic_menu_save"/>
     <TextView
         android:id="@+id/group_name"
         android:layout_width="wrap_content"
@@ -35,21 +35,34 @@
         android:layout_below="@+id/group_name"
         android:textSize="16sp" />
 
+
     <TextView
         android:id="@+id/group_contact_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/group_name"
-        android:layout_alignParentRight="true"
-        android:textSize="16sp" />
-    <TextView
-        android:id="@+id/group_image_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/group_name"
         android:layout_alignBottom="@+id/group_name"
         android:layout_alignParentRight="true"
         android:textSize="16sp" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/group_name"
+        android:layout_alignBottom="@+id/group_name"
+        android:layout_alignParentRight="true"/>
+    <TextView
+        android:id="@+id/group_image_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/group_created"
+        android:layout_alignParentRight="true"
+        android:textSize="16sp" />
+    <ImageView
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_alignBaseline="@+id/group_image_count"
+        android:layout_toLeftOf="@+id/group_image_count"
+        android:src="@drawable/ic_info_black_24dp"/>
 
 
 </RelativeLayout>
