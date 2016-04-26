@@ -52,7 +52,7 @@ public class MetaDataAdapter extends  ArrayAdapter<MetaData> {
        // contactImage.setImageResource(R.mipmap.images);
         try {
             //Bitmap bitmap = getThumbnail(getContext().getContentResolver(),listImageUri.get(0));
-            groupImage.setBackgroundColor(Color.RED);
+            //groupImage.setBackgroundColor(Color.RED);
             //Log.d("BITMAP","BITMAP Set "+bitmap.getByteCount());
         } catch (Exception e) {
             e.printStackTrace();
