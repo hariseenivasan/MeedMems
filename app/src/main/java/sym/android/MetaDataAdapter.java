@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -50,8 +51,8 @@ public class MetaDataAdapter extends  ArrayAdapter<MetaData> {
         groupImageCount.setText(""+listImageUri.size());
        // contactImage.setImageResource(R.mipmap.images);
         try {
-            Bitmap bitmap = getThumbnail(getContext().getContentResolver(),listImageUri.get(0));
-            groupImage.setImageBitmap(bitmap);
+            //Bitmap bitmap = getThumbnail(getContext().getContentResolver(),listImageUri.get(0));
+            groupImage.setBackgroundColor(Color.RED);
             //Log.d("BITMAP","BITMAP Set "+bitmap.getByteCount());
         } catch (Exception e) {
             e.printStackTrace();

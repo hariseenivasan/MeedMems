@@ -211,10 +211,11 @@ public class GroupsActivity extends AppCompatActivity {
 
             } else if(requestCode == CONTACTS_RETURN && resultCode == ContactsActivity.RESULT_OK) {
                 ArrayList<String> emailId = data.getStringArrayListExtra("data");
-                CreateandSendMetadata(groupName,mArrayUri,emailId);
+                CreateandSendMetadata(groupName, mArrayUri, emailId);
                 Toast.makeText(this, "Sending Photos to contacts",
                         Toast.LENGTH_LONG).show();
-
+                finish();
+                startActivity(getIntent());
             }else {
                 Toast.makeText(this, "You haven't picked Image",
                         Toast.LENGTH_LONG).show();
